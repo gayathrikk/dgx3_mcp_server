@@ -70,7 +70,7 @@ public class dgx3_mcp_server{
 
         // TO recipients
         String[] to = {
-            "sriramv@htic.iitm.ac.in
+            "sriramv@htic.iitm.ac.in"
         };
 
         // CC recipients
@@ -119,4 +119,5 @@ public class dgx3_mcp_server{
         }
     }
 }
+
 
