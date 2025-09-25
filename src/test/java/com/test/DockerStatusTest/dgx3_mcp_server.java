@@ -17,7 +17,7 @@ public class dgx3_mcp_server {
         String vmIpAddress = "172.20.23.156";
         String username = "appUser";
         String password = "Brain@123";
-        String containerName = "mcp";  // ✅ using container name
+        String containerName = "mcp";  
 
         System.out.println("dgx3_mcp_server Docker Name = " + containerName);
 
@@ -118,3 +118,4 @@ public class dgx3_mcp_server {
         }
     }
 }
+
