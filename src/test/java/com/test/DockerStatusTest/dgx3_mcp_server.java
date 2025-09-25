@@ -9,7 +9,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
-public class dgx3_mcp_server{
+public class dgx3_mcp_server {
 
     @Test(priority = 1)
     public void mcp_server() {
@@ -17,12 +17,12 @@ public class dgx3_mcp_server{
         String vmIpAddress = "172.20.23.156";
         String username = "appUser";
         String password = "Brain@123";
-        String containerId = "cb6ed54f687d";
+        String containerName = "mcp";  // ✅ using container name
 
-        System.out.println("dgx3_mcp_server Docker ID = " + containerId);
+        System.out.println("dgx3_mcp_server Docker Name = " + containerName);
 
-        if (containerId.isEmpty()) {
-            System.out.println("Container ID is required.");
+        if (containerName.isEmpty()) {
+            System.out.println("Container name is required.");
             return;
         }
 
@@ -33,9 +33,9 @@ public class dgx3_mcp_server{
             session.setConfig("StrictHostKeyChecking", "no");
             session.connect();
 
-            // Execute the docker inspect command to check the container's status
+            // ✅ Using container name instead of ID
             ChannelExec channel = (ChannelExec) session.openChannel("exec");
-            channel.setCommand("docker inspect --format='{{.State.Status}}' " + containerId);
+            channel.setCommand("docker inspect --format='{{.State.Status}}' " + containerName);
             channel.setInputStream(null);
             channel.setErrStream(System.err);
             BufferedReader reader = new BufferedReader(new InputStreamReader(channel.getInputStream()));
@@ -56,7 +56,7 @@ public class dgx3_mcp_server{
 
             // If container is not running, send alert
             if (!isRunning) {
-                sendEmailAlert("Hi,\n\n🚨 This is dgx3_mcp_server Docker. I am currently down. Kindly restart the container at your earliest convenience.");
+                sendEmailAlert("Hi,\n\n🚨 This is dgx3_mcp_server Docker (mcp). I am currently down. Kindly restart the container at your earliest convenience.");
                 assert false : "Container is not in the expected state.";
             }
 
@@ -99,7 +99,6 @@ public class dgx3_mcp_server{
             Message message = new MimeMessage(mailSession);
             message.setFrom(new InternetAddress(from, "Docker Monitor"));
 
-            // Convert arrays to comma-separated strings
             message.setRecipients(
                 Message.RecipientType.TO,
                 InternetAddress.parse(String.join(",", to))
@@ -119,5 +118,3 @@ public class dgx3_mcp_server{
         }
     }
 }
-
-
